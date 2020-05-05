@@ -28,7 +28,7 @@ jobs:
     
     # Create the resource group
     - name: Create Resource Group
-      run: az group create -n ${{ENV_RESOURCEGROUP}} -l ENV_RESOURCEGROUPLOCATION
+      run: az group create -n ${{env.ENV_RESOURCEGROUP}} -l ${{env.ENV_RESOURCEGROUPLOCATION}}
       
     # Log Out From Azure 
     - name: Logout
