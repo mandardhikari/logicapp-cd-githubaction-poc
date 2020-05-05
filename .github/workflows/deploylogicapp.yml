@@ -1,8 +1,7 @@
 #Name of the GitHub Action
-name: Deploy Logic APp
+name: Deploy Logic App
 
 #Set the action on which the workflow will trigger
-
 on:
  push:
    branches:
@@ -16,7 +15,7 @@ jobs:
   validate-and-deploy:
    runs-on: ubuntu-latest
    steps:
-    
+
     #Checkout the repository
     - name: Checout Repository
     - run: actions/checkout@master
@@ -27,7 +26,7 @@ jobs:
     - run: az group create -n ${{ENV_RESOURCEGROUP}} -l ENV_RESOURCEGROUPLOCATION
     - uses: azure/login@v1
       with:
-          creds: ${{secrets.AZURE_CREDENTIALS}}
+       creds: ${{secrets.AZURE_CREDENTIALS}}
     
     # Log Out From Azure 
 
