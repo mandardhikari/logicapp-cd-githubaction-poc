@@ -19,17 +19,14 @@ jobs:
     
     #Checkout the repository
     - name: Checout Repository
-    - run: actions/checkout@master
+      run: actions/checkout@master
 
     # Create the resource group
-
     - name: Create Resource Group
-    - run: az group create -n ${{ENV_RESOURCEGROUP}} -l ENV_RESOURCEGROUPLOCATION
-    - uses: azure/login@v1
+      run: az group create -n ${{ENV_RESOURCEGROUP}} -l ENV_RESOURCEGROUPLOCATION
+      uses: azure/login@v1
       with:
           creds: ${{secrets.AZURE_CREDENTIALS}}
-    
     # Log Out From Azure 
-
     - name: Logout
-    - run: az logout
+      run: az logout
