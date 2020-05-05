@@ -17,12 +17,12 @@ jobs:
    steps:
 
     #Checkout the repository
-    - name: Checout Repository
-      run: actions/checkout@master
+    - name: Checkout Repository
+      uses: actions/checkout@master
 
     #Use the azure provided action to log on to azure using service pricipal
-
-    - uses: azure/login@v1
+    - name: Login to Azure
+      uses: azure/login@v1
       with:
           creds: ${{secrets.AZURE_CREDENTIALS}}
     
