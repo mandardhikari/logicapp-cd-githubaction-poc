@@ -29,6 +29,11 @@ jobs:
     # Create the resource group
     - name: Create Resource Group
       run: az group create -n ${{env.ENV_RESOURCEGROUP}} -l ${{env.ENV_RESOURCEGROUPLOCATION}}
+
+    #Validate the  ARM template
+    - name: Validate ARM template
+      run: |
+        az deployment group validate -g ${{env.ENV_RESOURCEGROUP}} --mode Incremental --template-file ./src/Deployment/azure-logicapp-demo.deploy.json --parameters ./src/Deployment/azure-logicapp-demo.deploy.parameters.json
       
     # Log Out From Azure 
     - name: Logout
