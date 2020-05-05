@@ -32,4 +32,4 @@ jobs:
     # Log Out From Azure 
 
     - name: Logout
-    - run : az logout
+    - run: az logout
