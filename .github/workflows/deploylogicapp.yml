@@ -38,7 +38,7 @@ jobs:
     #Deploy the ARM Template
     - name: Deploy Logic App
       run: |
-       echo ::set-env name=logicappurl:: $(az deployment group create -g az-logicapp-githubactions-demo-rg ./src/Deployment/azure-logicapp-demo.deploy.json --parameters ./src/Deployment/azure-logicapp-demo.deploy.parameters.json --query 'properties.outputs.logicAppUrl.value' -o json)
+       echo ::set-env name=logicappurl:: $(az deployment group create -g az-logicapp-githubactions-demo-rg --template-file ./src/Deployment/azure-logicapp-demo.deploy.json --parameters ./src/Deployment/azure-logicapp-demo.deploy.parameters.json --query 'properties.outputs.logicAppUrl.value' -o json)
        
 
     # Log Out From Azure 
