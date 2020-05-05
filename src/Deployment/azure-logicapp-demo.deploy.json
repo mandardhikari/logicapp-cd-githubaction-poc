@@ -85,5 +85,10 @@
       "apiVersion": "2016-06-01"
     }
   ],
-  "outputs": {}
+  "outputs": {
+     "logicAppUrl": {
+      "type": "string",
+      "value": "[listCallbackURL(concat(resourceId('Microsoft.Logic/workflows/', parameters('LogicAppName')), '/triggers/manual'), '2016-06-01').value]"
+   }
+  }
 }
