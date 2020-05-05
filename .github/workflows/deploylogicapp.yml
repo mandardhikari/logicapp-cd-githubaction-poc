@@ -10,8 +10,7 @@ on:
 env:
   ENV_RESOURCEGROUP: az-logicapp-githubactions-demo-rg
   ENV_RESOURCEGROUPLOCATION: australiaeast
-  ENV_LOGICAPPURL: ''
-
+  
 jobs:
   validate-and-deploy:
    runs-on: ubuntu-latest
@@ -39,8 +38,8 @@ jobs:
     #Deploy the ARM Template
     - name: Deploy Logic App
       run: |
-       ${{env.ENV_LOGICAPPURL}} = $(az deployment group create -g ${{env.ENV_RESOURCEGROUP}} --mode Incremental --template-file ./src/Deployment/azure-logicapp-demo.deploy.json --parameters ./src/Deployment/azure-logicapp-demo.deploy.parameters.json --query 'properties.outputs.logicAppUrl.value' -o json)
-       echo  ${{env.ENV_LOGICAPPURL}}
+       az deployment group create -g ${{env.ENV_RESOURCEGROUP}} --mode Incremental --template-file ./src/Deployment/azure-logicapp-demo.deploy.json --parameters ./src/Deployment/azure-logicapp-demo.deploy.parameters.json
+       
 
     # Log Out From Azure 
     - name: Logout
