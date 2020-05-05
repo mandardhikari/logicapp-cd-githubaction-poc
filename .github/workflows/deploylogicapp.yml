@@ -47,25 +47,16 @@ jobs:
     # Log Out From Azure 
     - name: Logout
       run: az logout
-  
-  test-deployment:
-   runs-on: ubuntu-latest
-   steps:
-
-    - name: Checkout Repository
-      uses: actions/checkout@master
-
+    
     - name: set up node
       uses: actions/setup-node@v1
       with:
           node-version: '12.x'
 
     - name: Install newman
+      run: npm install -g newman
+    
+    - name: Run Postman collection
       run: |
-       npm install -g newman
-       
-    - name: Echo Environment Variable
-      run: echo Logic App url is ${{env.logicappurl}}
-    
-    
+       newman run ./src/Test/logicapp-githubactions-test-collection.json -e ./src/Test/logicapp-githubactions-test-env.json --env-var "url= ${{env.logicappurl}}"
     
