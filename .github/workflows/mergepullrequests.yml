@@ -1,0 +1,79 @@
+# Name of the GitHub workflow
+name: Merge Pull requests
+
+on:
+ pull_request:
+   branches:
+    master
+
+jobs:
+ validate-arm-templates:
+
+  # Configure run environement for the action
+  runs-on: ubuntu-latest
+  
+  #Configure the environment variables that will be available for all the steps in 
+  #the job
+  env:
+    RESOURCEGROUP: az-logicapp-githubactions-merge-rg
+    LOCATION: australiaeast
+  
+  # Define the Steps in the job
+  steps:
+   
+   #Checkout the repository
+   - name: Checkout repository
+     uses: actions/checkout@develop
+   
+   # Login to Azure
+   - name: Login to Azure
+     uses: azure/login@v1
+     with:
+         creds: ${{secrets.AZURE_CREDENTIALS}}
+
+   # Create a resource group
+   - name: Create Dev Resource group
+     run: az group create -n ${{env.ENV_RESOURCEGROUP}} -l ${{env.ENV_RESOURCEGROUPLOCATION}}
+
+   # Validate the ARM Template
+   - name: Validate ARM template
+     run: 
+      az deployment group validate -g ${{env.ENV_RESOURCEGROUP}} --mode Incremental --template-file ./src/Deployment/azure-logicapp-demo.deploy.json --parameters ./src/Deployment/azure-logicapp-demo.deploy.parameters.json
+   
+   # Deploy the ARM template
+   - name: Deploy Logic App
+     run: |
+       echo "::set-env name=logicappurl::$(az deployment group create -g az-logicapp-githubactions-demo-rg --template-file ./src/Deployment/azure-logicapp-demo.deploy.json --parameters ./src/Deployment/azure-logicapp-demo.deploy.parameters.json --query 'properties.outputs.logicAppUrl.value' -o tsv)"
+     shell: bash
+   
+   # Set up node on the agent
+   - name: Setup node
+     uses: actions/setup-node@v1
+     with:
+         node-version: '12.x'
+   
+   # Install newman on the agent
+   - name: Install newman
+     run: npma install -g newman
+   
+   # Run the postman collection
+   - name: Run Tests
+     run: |
+      newman run ./src/Test/logicapp-githubactions-test-collection.json -e ./src/Test/logicapp-githubactions-test-env.json --env-var "url= ${{env.logicappurl}}" --supress-exit-code 1
+     
+   - name: Clean up Resource Group
+     run: 
+       az group delete -n ${{env.ENV_RESOURCEGROUP}} -y
+  
+   # Logout of Azure
+   - name: Logout from Azure
+     run: az logout
+
+
+
+   
+   
+    
+
+ 
+
