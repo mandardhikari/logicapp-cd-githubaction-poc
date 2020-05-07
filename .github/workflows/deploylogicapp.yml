@@ -53,14 +53,18 @@ jobs:
     - name: Install newman
       run: npm install -g newman
     
+    - name: Make directory
+      run: mkdir -p testResults
+
     - name: Run Postman collection
       run: |
-       newman run ./src/Test/logicapp-githubactions-test-collection.json -e ./src/Test/logicapp-githubactions-test-env.json --env-var "url= ${{env.logicappurl}}" --reporters cli,json --reporter-json-export output.json > output.json
+       newman run ./src/Test/logicapp-githubactions-test-collection.json -e ./src/Test/logicapp-githubactions-test-env.json --env-var "url= ${{env.logicappurl}}" --reporters cli,json --reporter-json-export output.json > testResults/output.json
 
+      
     - name: Output the run Details
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with: 
        name: postmanrunreport
-       path: TestResults/output.json
+       path: testResults/output.json
          
     
