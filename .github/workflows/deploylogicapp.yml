@@ -55,7 +55,12 @@ jobs:
     
     - name: Run Postman collection
       run: |
-       newman run ./src/Test/logicapp-githubactions-test-collection.json -e ./src/Test/logicapp-githubactions-test-env.json --env-var "url= ${{env.logicappurl}}"
+       newman run ./src/Test/logicapp-githubactions-test-collection.json -e ./src/Test/logicapp-githubactions-test-env.json --env-var "url= ${{env.logicappurl}}" --reporters cli,json --reporter-json-export output.json > output.json
 
+    - name: Output the run Details
+      uses: actions/upload-artifcat@v1
+      with: 
+       name: postmanrunreport
+       path: postmanrunreport/output.json
          
     
