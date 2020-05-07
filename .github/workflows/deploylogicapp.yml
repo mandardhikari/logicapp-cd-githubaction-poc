@@ -61,6 +61,6 @@ jobs:
       uses: actions/upload-artifact@v1
       with: 
        name: postmanrunreport
-       path: postmanrunreport/output.json
+       path: TestResults/output.json
          
     
